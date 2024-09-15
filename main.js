@@ -1,6 +1,6 @@
 import './style.css'
 import { BLOCK_SIZE, PIECES, BOARD_WIDTH, BOARD_HEIGHT, EVENT_MOVEMENTS } from './consts'
-
+import { HashTable } from './HashTable'
 // 1. inicializar el canvas
 const canvas = document.querySelector('canvas')
 const context = canvas.getContext('2d')
@@ -15,165 +15,7 @@ canvas.height = BLOCK_SIZE * BOARD_HEIGHT
 
 context.scale(BLOCK_SIZE, BLOCK_SIZE)
 
-// 3. board
-// const board = createBoard(BOARD_WIDTH, BOARD_HEIGHT)
-
-const board = [
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0
-  ],
-  [
-    1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1,
-    0, 0
-  ],
-  [
-    1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1,
-    0, 0
-  ]
-]
-
-function createBoard (width, height) {
-  return Array(height).fill().map(() => Array(width).fill(0))
-}
+const board = new HashTable();
 
 // 4. pieza player
 const piece = {
@@ -219,15 +61,14 @@ function draw () {
   // todo el tablero
   context.fillStyle = '#000'
   context.fillRect(0, 0, canvas.width, canvas.height)
-
-  board.forEach((row, y) => {
-    row.forEach((value, x) => {
-      if (value === 1) {
+  for (let y = 0; y < BOARD_HEIGHT; y++) {
+    for (let x = 0; x < BOARD_WIDTH; x++) {
+      if (board.getValue(y, x) === 1) {
         context.fillStyle = 'yellow'
         context.fillRect(x, y, 1, 1)
       }
-    })
-  })
+    }
+  }
 
   piece.shape.forEach((row, y) => {
     row.forEach((value, x) => {
@@ -291,8 +132,7 @@ function checkCollision () {
   return piece.shape.find((row, y) => {
     return row.find((value, x) => {
       return (
-        value === 1 &&
-        board[y + piece.position.y]?.[x + piece.position.x] !== 0
+        value === 1 && board.getValue(y + piece.position.y, x + piece.position.x) !== 0
       )
     })
   })
@@ -302,7 +142,7 @@ function solidifyPiece () {
   piece.shape.forEach((row, y) => {
     row.forEach((value, x) => {
       if (value === 1) {
-        board[y + piece.position.y][x + piece.position.x] = 1
+        board.setValue(y + piece.position.y, x + piece.position.x, 1)
       }
     })
   })
@@ -319,7 +159,11 @@ function resetPiece () {
   // gameover
   if (checkCollision()) {
     window.alert('Game over!! Sorry!')
-    board.forEach((row) => row.fill(0))
+    for (let y = 0; y < BOARD_HEIGHT; y++) {
+      for (let x = 0; x < BOARD_WIDTH; x++) {
+        board.setValue(y, x, 0)
+      }
+    }
     score = 0
   }
 }
@@ -327,18 +171,34 @@ function resetPiece () {
 function removeRows () {
   const rowsToRemove = []
 
-  board.forEach((row, y) => {
-    if (row.every(value => value === 1)) {
+  for (let y = 0; y < BOARD_HEIGHT; y++) {
+    // Verifica si toda la fila está llena
+    const row = board.getRow(y);
+    const isRowFull = Object.keys(row).every(x => board.getValue(y, x) === 1)
+    if (isRowFull) {
       rowsToRemove.push(y)
     }
-  })
+  }
 
   rowsToRemove.forEach(y => {
-    board.splice(y, 1)
-    const newRow = Array(BOARD_WIDTH).fill(0)
-    board.unshift(newRow)
+    // Elimina la fila y agrega una fila vacía en la parte superior
+    for (let x = 0; x < BOARD_WIDTH; x++) {
+      board.setValue(y, x, 0)
+    }
     score += 10
   })
+  // Mueve las filas restantes hacia abajo
+  rowsToRemove.reverse().forEach(y => {
+    for (let row = y; row > 0; row--) {
+      for (let x = 0; x < BOARD_WIDTH; x++) {
+        board.setValue(row, x, board.getValue(row - 1, x));
+      }
+    }
+    // Agrega una fila vacía en la parte superior
+    for (let x = 0; x < BOARD_WIDTH; x++) {
+      board.setValue(0, x, 0);
+    }
+  });
 }
 
 $section.addEventListener('click', () => {
