@@ -1,17 +1,21 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tetris Rush</title>
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
     <div id="app">
       <section>Start Game</section>
-      <canvas></canvas>  
+      <div id="game">
+        <canvas></canvas>
+        <canvas id="pieces"></canvas>
+      </div>
     </div>
     <strong>Puntuación: <span></span></strong>
-    <script type="module" src="/main.js"></script>
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>

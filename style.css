@@ -32,3 +32,13 @@ section {
   font-size: 48px;
   place-content: center;
 }
+
+#game {
+  display: flex;
+  gap: 10px;
+}
+
+#pieces {
+  width: 300px;
+  height: 300px;
+}
