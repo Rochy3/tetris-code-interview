@@ -73,8 +73,8 @@ export function drawBoard() {
       }
     }
   }
-
-  piece.shape.forEach((row, y) => {
+  const shape = piece.shape.getShape();
+  shape.forEach((row, y) => {
     row.forEach((value, x) => {
       if (value) {
         gameContext.fillStyle = "red";

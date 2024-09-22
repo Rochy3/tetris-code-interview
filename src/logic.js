@@ -4,6 +4,7 @@
 import { PIECES, BOARD_WIDTH, BOARD_HEIGHT, EVENT_MOVEMENTS } from "./consts";
 import { piece, pieceQueue } from "./main.js";
 import score, { board, setScore } from "./ui.js";
+import { GraphPiece } from "./data_structures/GraphPiece";
 
 document.addEventListener("keydown", (event) => {
   if (event.key === EVENT_MOVEMENTS.LEFT) {
@@ -30,29 +31,18 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === "ArrowUp") {
-    const rotated = [];
+    const previousShape = piece.shape.getShape();; // Store the current shape
+    piece.shape.rotate(); // Rotate the graph piece
 
-    // ESTO ES LO MÁS COMPLICADO DE LEJOS
-    for (let i = 0; i < piece.shape[0].length; i++) {
-      const row = [];
-
-      for (let j = piece.shape.length - 1; j >= 0; j--) {
-        row.push(piece.shape[j][i]);
-      }
-
-      rotated.push(row);
-    }
-
-    const previousShape = piece.shape;
-    piece.shape = rotated;
     if (checkCollision()) {
-      piece.shape = previousShape;
+      piece.shape.initializeGraph(previousShape); // Revert if there's a collision
     }
   }
 });
 
 export function checkCollision() {
-  return piece.shape.find((row, y) => {
+  const shape = piece.shape.getShape();
+  return shape.find((row, y) => {
     return row.find((value, x) => {
       return (
         value === 1 &&
@@ -63,7 +53,8 @@ export function checkCollision() {
 }
 
 export function solidifyPiece() {
-  piece.shape.forEach((row, y) => {
+  const shape = piece.shape.getShape();
+  shape.forEach((row, y) => {
     row.forEach((value, x) => {
       if (value === 1) {
         board.setValue(y + piece.position.y, x + piece.position.x, 1);
@@ -130,6 +121,7 @@ export function getNextPiece() {
   const nextPiece = pieceQueue.dequeue();
   const randomPiece = PIECES[Math.floor(Math.random() * PIECES.length)];
   pieceQueue.enqueue(randomPiece); // Reponer la cola con una nueva pieza aleatoria
-
-  return nextPiece;
+  // Initialize the piece as a GraphPiece
+  const graphPiece = new GraphPiece(nextPiece);
+  return graphPiece; // Return the GraphPiece object
 }
