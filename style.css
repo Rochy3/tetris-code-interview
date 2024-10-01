@@ -2,11 +2,9 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: dark light;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -23,22 +21,138 @@ body {
 
 section {
   position: absolute;
-  background: black;
+  background: rgba(0, 0, 0, 0.95); /* Fondo semi-transparente más oscuro */
   width: 100vw;
-  height: 100hw;
+  height: 100vh; /* Mantener 100vh para ocupar toda la altura */
   top: 0;
   inset: 0;
+  z-index: 100;
+  position: fixed;
   display: grid;
   font-size: 48px;
   place-content: center;
+  border: 3px solid rgba(255, 255, 255, 0.1); /* Añadir borde blanco tenue */
+  border-radius: 12px; /* Bordes redondeados para la sección */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8); /* Sombra más intensa */
 }
 
 #game {
   display: flex;
-  gap: 10px;
+  gap: 30px; /* Aumentado el espaciado entre elementos */
+  padding: 20px; /* Padding adicional */
+}
+
+.board {
+  border: 2px solid #4CAF50; /* Borde verde */
+  border-radius: 10px; /* Bordes redondeados */
+  background-color: #3a3a3a; /* Color de fondo para el tablero */
+  display: flex;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra para profundidad */
 }
 
 #pieces {
-  width: 300px;
-  height: 300px;
+  width: 150px;
+  height: 150px;
+  border: 2px solid #4CAF50; /* Borde verde */
+  border-radius: 12px; /* Bordes redondeados más suaves */
+  background-color: #2a2a2a; /* Color de fondo para el área de piezas */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrado del contenido */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+  transition: transform 0.2s; /* Transición para hover */
+}
+
+#pieces:hover {
+  transform: scale(1.02); /* Efecto de aumento al pasar el mouse */
+}
+
+.piece {
+  width: 80px; /* Ancho de las piezas */
+  height: 80px; /* Alto de las piezas */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrado del contenido */
+  background-color: #4CAF50; /* Color de fondo para las piezas */
+  color: white; /* Color de texto blanco */
+  border-radius: 8px; /* Bordes redondeados para piezas */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra suave para las piezas */
+  transition: transform 0.2s; /* Transición para hover */
+}
+
+.piece:hover {
+  transform: translateY(-5px); /* Efecto de elevación al pasar el mouse */
+}
+
+
+#graph-container {
+  display: flex;
+
+}
+
+.vertex {
+  background-color: #4CAF50; /* Color verde para los nodos */
+  color: white;
+  border-radius: 8px;
+  padding: 10px;
+  display: inline-block; /* Para que los nodos estén en línea */
+  position: relative; /* Posición relativa para los bordes */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  min-width: 120px; /* Ancho mínimo para que los nodos sean más uniformes */
+}
+
+.edges {
+  display: flex; /* Usar flexbox para organizar las conexiones */
+  flex-direction: column; /* Organizar en columna */
+  position: absolute; /* Posiciona las conexiones de forma absoluta */
+  left: 100%; /* Mueve las conexiones a la derecha del nodo */
+  top: 50%; /* Centrar verticalmente */
+  transform: translateY(-50%); /* Ajustar el centrado */
+  margin-left: 10px; /* Margen a la izquierda de las conexiones */
+}
+
+.edge {
+  margin: 5px 0; /* Espaciado entre conexiones */
+  color: #555; /* Color gris para las conexiones */
+  position: relative; /* Posición relativa para las líneas */
+}
+
+/* Línea de conexión */
+.edge::before {
+  content: '';
+  position: absolute;
+  left: -10px; /* Ajustar la posición de la línea a la izquierda */
+  top: 50%; /* Centrar verticalmente */
+  width: 10px; /* Ancho de la línea */
+  height: 1px; /* Alto de la línea */
+  background-color: #4CAF50; /* Color de la línea */
+  z-index: -1; /* Colocar la línea detrás del texto */
+}
+
+/* Estilo de la flecha */
+.edge::after {
+  content: '→'; /* Flecha para indicar conexión */
+  margin-left: 5px; /* Espaciado después de la flecha */
+  color: #4CAF50; /* Color de la flecha */
+}
+
+#start-btn {
+  background-color: #4CAF50; /* Color de fondo verde */
+  color: white; /* Color del texto */
+  border: none; /* Sin borde */
+  border-radius: 8px; /* Bordes redondeados */
+  padding: 15px 30px; /* Espaciado interno */
+  font-size: 18px; /* Tamaño de fuente */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+  transition: background-color 0.3s, transform 0.2s; /* Animaciones suaves */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+#start-btn:hover {
+  background-color: #45a049; /* Color más oscuro al pasar el mouse */
+  transform: translateY(-2px); /* Levantar el botón ligeramente */
+}
+
+#start-btn:active {
+  transform: translateY(0); /* Regresar a la posición original al hacer clic */
 }

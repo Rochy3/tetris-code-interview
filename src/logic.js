@@ -1,9 +1,9 @@
 /* eslint-disable quotes */
 /* eslint-disable space-before-function-paren */
 /* eslint-disable semi */
-import { PIECES, BOARD_WIDTH, BOARD_HEIGHT, EVENT_MOVEMENTS } from "./consts";
-import { piece, pieceQueue } from "./main.js";
-import score, { board, setScore } from "./ui.js";
+import { PIECES, BOARD_WIDTH, BOARD_HEIGHT, EVENT_MOVEMENTS, COLORS } from "./consts";
+import { piece, pieceQueue, scoreHeap } from "./main.js";
+import { board, drawScores, setScore, score, setColor } from "./ui.js";
 import { GraphPiece } from "./data_structures/GraphPiece";
 
 document.addEventListener("keydown", (event) => {
@@ -31,7 +31,7 @@ document.addEventListener("keydown", (event) => {
   }
 
   if (event.key === "ArrowUp") {
-    const previousShape = piece.shape.getShape();; // Store the current shape
+    const previousShape = piece.shape.getShape(); // Store the current shape
     piece.shape.rotate(); // Rotate the graph piece
 
     if (checkCollision()) {
@@ -71,9 +71,14 @@ export function resetPiece() {
   piece.position.y = 0;
   // get random shape
   piece.shape = getNextPiece();
+  setColor(COLORS[Math.floor(Math.random() * COLORS.length)])
   // gameover
   if (checkCollision()) {
     window.alert("Game over!! Sorry!");
+
+    scoreHeap.insert(score);
+    drawScores();
+
     for (let y = 0; y < BOARD_HEIGHT; y++) {
       for (let x = 0; x < BOARD_WIDTH; x++) {
         board.setValue(y, x, 0);

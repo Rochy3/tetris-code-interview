@@ -9,6 +9,8 @@ export const EVENT_MOVEMENTS = {
   RIGHT: 'ArrowRight'
 }
 
+export const COLORS = ['red', 'green', 'blue', 'yellow', 'purple']
+
 export const PIECES = [
   [ // la pieza amarilla
     [1, 1],

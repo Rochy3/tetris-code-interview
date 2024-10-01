@@ -1,32 +1,32 @@
-/* eslint-disable space-before-function-paren */
-/* eslint-disable comma-dangle */
-/* eslint-disable semi */
+/* eslint-disable indent */
+/* eslint-disable no-unused-vars */
 /* eslint-disable quotes */
-/* eslint-disable no-return-assign */
+/* eslint-disable semi */
 import "../style.css";
 import { PIECES } from "./consts";
 import {
   checkCollision,
   solidifyPiece,
   removeRows,
-  getNextPiece,
+  getNextPiece
 } from "./logic";
 import { Queue } from "./data_structures/Queue";
-import { start, drawBoard, drawNextPiece } from "./ui";
+import { MaxHeap } from "./data_structures/MaxHeap";
+import { Graph } from "./data_structures/Graph";
+import { start, drawBoard, drawNextPiece, drawScores } from "./ui";
 
-// Creación de la cola
+// -----------------
 export const pieceQueue = new Queue();
 export const piece = {
-  position: { x: 5, y: 5 },
+  position: { x: 5, y: 5 }
 };
 
-// Inicializar la cola con las primeras piezas
-function initializeQueue() {
-  for (let i = 0; i < 5; i++) {
-    const randomPiece = PIECES[Math.floor(Math.random() * PIECES.length)];
-    pieceQueue.enqueue(randomPiece);
-  }
-}
+// -----------------
+// Uso del Max-Heap para puntuaciones
+export const scoreHeap = new MaxHeap();
+scoreHeap.insert(15);
+scoreHeap.insert(5);
+scoreHeap.insert(10);
 
 initializeQueue();
 
@@ -34,13 +34,24 @@ piece.shape = getNextPiece();
 
 let dropCounter = 0;
 let lastTime = 0;
+let isPaused = false; // Variable para controlar la pausa
 
 start();
-console.log("started");
+drawScores();
 
-// -----------------
+function initializeQueue () {
+  for (let i = 0; i < 5; i++) {
+    const randomPiece = PIECES[Math.floor(Math.random() * PIECES.length)];
+    pieceQueue.enqueue(randomPiece);
+  }
+}
 
-export function update(time = 0) {
+export function update (time = 0) {
+  if (isPaused) {
+    window.requestAnimationFrame(update);
+    return;
+  }
+
   const deltaTime = time - lastTime;
   lastTime = time;
 
@@ -62,3 +73,16 @@ export function update(time = 0) {
 
   window.requestAnimationFrame(update);
 }
+
+// Función para alternar la pausa
+export function togglePause () {
+  isPaused = !isPaused;
+ // drawPause(); // Opcional, si quieres mostrar algo durante la pausa
+}
+
+// Evento de teclado para alternar la pausa
+window.addEventListener("keydown", (event) => {
+  if (event.key === "p" || event.key === "P") {
+    togglePause();
+  }
+});

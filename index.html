@@ -9,13 +9,23 @@
   </head>
   <body>
     <div id="app">
-      <section>Start Game</section>
+      <section>
+        <h1>Tetris Rush</h1>
+        <button id="start-btn">Iniciar Juego</button> <!-- Botón para iniciar el juego -->
+      </section>
       <div id="game">
-        <canvas></canvas>
-        <canvas id="pieces"></canvas>
+        <canvas id="board" class="board"></canvas> <!-- Clase añadida para el tablero -->
+        <div class="side">
+          <h2>Siguiente pieza</h2>
+          <canvas id="pieces" class="pieces"></canvas> <!-- Clase añadida para el área de piezas -->
+          <h2>Mejores puntajes</h2>
+          <div class="scores"></div>
+          <h2>Grafo de conexiones</h2>
+          <div id="graph-container"></div>
+        </div>
       </div>
     </div>
-    <strong>Puntuación: <span></span></strong>
+    <strong>Puntuación: <span id="score">0</span></strong> <!-- ID añadido para el score -->
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

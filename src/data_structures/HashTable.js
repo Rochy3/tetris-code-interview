@@ -8,7 +8,7 @@ export class TwoDimHashTable {
 
       // Crear 14 keys secundarias para cada key principal
       for (let j = 0; j < height; j++) {
-        this.table[i][j] = 0 
+        this.table[i][j] = 0
       }
     }
   }
